@@ -23,7 +23,7 @@ La UI Svelte 5 est **pré-compilée** dans `ui/assets/` — aucun `npm install` 
 
 ## Premiers pas
 
-Commence par l'[Installation](/docs/introduction/installation) pour mettre LastMenu en place sur ton serveur, puis consulte le [Quick Start](/docs/introduction/quickstart) pour des exemples concrets.
+Commence par l'[Installation](introduction/installation) pour mettre LastMenu en place sur ton serveur, puis consulte le [Quick Start](introduction/quickstart) pour des exemples concrets.
 
 ## Aperçu rapide
 
@@ -58,19 +58,19 @@ end)
 
 | Section | Contenu |
 |---|---|
-| [Installation](/docs/introduction/installation) | fxmanifest, server.cfg, premiers pas |
-| [Quick Start](/docs/introduction/quickstart) | Exemples concrets par cas d'usage |
-| [Context Menu](/docs/composants/context-menu) | Menu vertical — tous les types d'items |
-| [Radial Menu](/docs/composants/radial) | Roue circulaire d'actions rapides |
-| [Input Form](/docs/composants/input) | Formulaires multi-champs modaux |
-| [Modal / Alert](/docs/composants/modal) | Boîtes de confirmation |
-| [Notifications](/docs/composants/notifications) | Toasts non-bloquants |
-| [Progress Bar](/docs/composants/progress) | Barre de progression avec side-effects |
-| [Target System](/docs/composants/target) | Remplacement ox_target / qtarget |
-| [Réactivité](/docs/avance/reactivite) | Moteur de polling diff/patch |
-| [API Async](/docs/avance/async-api) | input_async et alert_async (coroutine-style) |
-| [Sous-menus & Stack](/docs/avance/sous-menus) | Navigation stack et imbrication |
-| [Thématisation](/docs/personnalisation/theming) | Variables CSS custom properties |
-| [Migration](/docs/personnalisation/migration) | Depuis ox_lib, RageUI, qb-menu |
-| [Débogage](/docs/personnalisation/debugging) | Outils de diagnostic intégrés |
-| [Pièges courants](/docs/personnalisation/pitfalls) | Anti-patterns à éviter absolument |
+| [Installation](introduction/installation) | fxmanifest, server.cfg, premiers pas |
+| [Quick Start](introduction/quickstart) | Exemples concrets par cas d'usage |
+| [Context Menu](composants/context-menu) | Menu vertical — tous les types d'items |
+| [Radial Menu](composants/radial) | Roue circulaire d'actions rapides |
+| [Input Form](composants/input) | Formulaires multi-champs modaux |
+| [Modal / Alert](composants/modal) | Boîtes de confirmation |
+| [Notifications](composants/notifications) | Toasts non-bloquants |
+| [Progress Bar](composants/progress) | Barre de progression avec side-effects |
+| [Target System](composants/target) | Remplacement ox_target / qtarget |
+| [Réactivité](avance/reactivite) | Moteur de polling diff/patch |
+| [API Async](avance/async-api) | input_async et alert_async (coroutine-style) |
+| [Sous-menus & Stack](avance/sous-menus) | Navigation stack et imbrication |
+| [Thématisation](personnalisation/theming) | Variables CSS custom properties |
+| [Migration](personnalisation/migration) | Depuis ox_lib, RageUI, qb-menu |
+| [Débogage](personnalisation/debugging) | Outils de diagnostic intégrés |
+| [Pièges courants](personnalisation/pitfalls) | Anti-patterns à éviter absolument |

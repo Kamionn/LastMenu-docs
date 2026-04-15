@@ -23,7 +23,7 @@ The Svelte 5 UI is **pre-compiled** into `ui/assets/` — no `npm install` requi
 
 ## Getting Started
 
-Start with [Installation](/docs/introduction/installation) to set up LastMenu on your server, then check the [Quick Start](/docs/introduction/quickstart) for practical examples.
+Start with [Installation](introduction/installation) to set up LastMenu on your server, then check the [Quick Start](introduction/quickstart) for practical examples.
 ## Quick Overview
 
 The entire LastMenu API follows the same pattern: one export call + a builder function.
@@ -57,19 +57,19 @@ end)
 
 | Section | Content |
 |---|---|
-| [Installation](/docs/introduction/installation) | fxmanifest, server.cfg, first steps |
-| [Quick Start](/docs/introduction/quickstart) | Practical examples by use case |
-| [Context Menu](/docs/composants/context-menu) | Vertical menu — all item types |
-| [Radial Menu](/docs/composants/radial) | Circular quick-action wheel |
-| [Input Form](/docs/composants/input) | Multi-field modal forms |
-| [Modal / Alert](/docs/composants/modal) | Confirmation dialogs |
-| [Notifications](/docs/composants/notifications) | Non-blocking toasts |
-| [Progress Bar](/docs/composants/progress) | Progress bar with side-effects |
-| [Target System](/docs/composants/target) | ox_target / qtarget replacement |
-| [Reactivity](/docs/avance/reactivite) | diff/patch polling engine |
-| [Async API](/docs/avance/async-api) | input_async and alert_async (coroutine-style) |
-| [Sub-menus & Stack](/docs/avance/sous-menus) | Navigation stack and nesting |
-| [Theming](/docs/personnalisation/theming) | CSS custom properties |
-| [Migration](/docs/personnalisation/migration) | From ox_lib, RageUI, qb-menu |
-| [Debugging](/docs/personnalisation/debugging) | Built-in diagnostic tools |
-| [Common Pitfalls](/docs/personnalisation/pitfalls) | Anti-patterns to avoid |
+| [Installation](introduction/installation) | fxmanifest, server.cfg, first steps |
+| [Quick Start](introduction/quickstart) | Practical examples by use case |
+| [Context Menu](composants/context-menu) | Vertical menu — all item types |
+| [Radial Menu](composants/radial) | Circular quick-action wheel |
+| [Input Form](composants/input) | Multi-field modal forms |
+| [Modal / Alert](composants/modal) | Confirmation dialogs |
+| [Notifications](composants/notifications) | Non-blocking toasts |
+| [Progress Bar](composants/progress) | Progress bar with side-effects |
+| [Target System](composants/target) | ox_target / qtarget replacement |
+| [Reactivity](avance/reactivite) | diff/patch polling engine |
+| [Async API](avance/async-api) | input_async and alert_async (coroutine-style) |
+| [Sub-menus & Stack](avance/sous-menus) | Navigation stack and nesting |
+| [Theming](personnalisation/theming) | CSS custom properties |
+| [Migration](personnalisation/migration) | From ox_lib, RageUI, qb-menu |
+| [Debugging](personnalisation/debugging) | Built-in diagnostic tools |
+| [Common Pitfalls](personnalisation/pitfalls) | Anti-patterns to avoid |

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
 	import type { DocMeta } from '$lib/docs/types.js';
-	import { toc } from '$lib/docs/toc.svelte';
-	import { docsConfig } from '$lib/docs/config.js';
-	import MobileToc from '$lib/components/mobile-toc.svelte';
-	import BackToTop from '$lib/components/nav/back-to-top.svelte';
+import { base } from '$app/paths';
+import { docsConfig } from '$lib/docs/config.js';
+import MobileToc from '$lib/components/mobile-toc.svelte';
+import BackToTop from '$lib/components/nav/back-to-top.svelte';
 	import CopyUrl from '$lib/components/nav/copy-url.svelte';
 	import PageFeedback from '$lib/components/nav/page-feedback.svelte';
 	import PencilIcon from '@lucide/svelte/icons/pencil';
@@ -96,6 +96,15 @@
 				});
 				document.body.appendChild(overlay);
 			});
+		}
+
+		const anchors = container.querySelectorAll<HTMLAnchorElement>('a[href^="/docs"]');
+		for (const anchor of anchors) {
+			const href = anchor.getAttribute('href');
+			if (href && href.startsWith('/docs')) {
+				const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
+				anchor.setAttribute('href', `${normalizedBase}${href}`);
+			}
 		}
 
 		toc.extractHeadings(container);

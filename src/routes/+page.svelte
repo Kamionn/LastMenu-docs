@@ -12,8 +12,14 @@
 	import LayersIcon from "@lucide/svelte/icons/layers";
 	import MonitorIcon from "@lucide/svelte/icons/monitor";
 	import PackageIcon from "@lucide/svelte/icons/package";
+	import Typewriter from "$lib/components/Typewriter.svelte";
 
 	const features = [
+		{
+			icon: LayoutGridIcon,
+			title: "7 Components, 1 API",
+			description: "Context Menu, Radial Menu, Target Menu, and more",
+		},
 		{
 			icon: LayersIcon,
 			title: "Zero dependencies",
@@ -34,11 +40,7 @@
 			title: "Safe Mode",
 			description: "Defective watchers are automatically disabled and recovered — no cascade crashes.",
 		},
-		{
-			icon: LayoutGridIcon,
-			title: "Navigation stack",
-			description: "Nested sub-menus to arbitrary depth. Escape automatically goes back up the stack.",
-		},
+
 		{
 			icon: PaletteIcon,
 			title: "CSS theming",
@@ -67,6 +69,23 @@
 		{ name: "Progress Bar", desc: "Bar with ped, prop and cb_tick animation", href: docsPath('/docs/composants/progress') },
 		{ name: "Target System", desc: "ox_target replacement — entities, zones, polygons", href: docsPath('/docs/composants/target') },
 	];
+
+	const fullCode = `
+	local UI = exports['LastMenu']
+
+	function TriggerGarageMenu()
+		UI:context(function(menu)
+			menu:title("Garage")
+			menu:description("Vehicle maintenance")
+			menu:banner("https://example.com/garage.gif")
+			menu:button("Repair engine", {
+				icon = "wrench",
+				badge = "500 €",
+				confirm_hold = true,
+				cb = function() RepairFunction() end,
+			})
+		end)
+	end`;
 </script>
 
 <!-- Navbar -->
@@ -94,31 +113,48 @@
 <section class="relative overflow-hidden">
 	<div class="from-primary/5 via-background to-background absolute inset-0 bg-linear-to-b"></div>
 	<div class="from-primary/10 to-primary/0 absolute left-1/2 top-0 hidden size-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-b blur-3xl sm:block"></div>
-	<div class="relative mx-auto max-w-4xl px-4 py-24 text-center sm:px-6 sm:py-32 lg:py-40">
-		<div class="bg-muted text-muted-foreground mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm">
-			<ZapIcon class="size-3.5" />
-			<span>v1.0.0 — Zero dependencies · Svelte 5 · FiveM</span>
-		</div>
-		<h1 class="text-foreground mb-6 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-			LastMenu
-		</h1>
-		<p class="text-muted-foreground mx-auto mb-4 max-w-2xl text-xl font-medium sm:text-2xl">
-			Universal menu system for FiveM.
-		</p>
-		<p class="text-muted-foreground mx-auto mb-10 max-w-2xl text-base sm:text-lg">
-			One API. All menu types. Real-time reactivity.
-			Works without <code class="bg-muted rounded px-1.5 py-0.5 text-sm">ox_lib</code>,
-			<code class="bg-muted rounded px-1.5 py-0.5 text-sm">qbx_core</code> or any framework.
-		</p>
-		<div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-			<Button size="lg" href={docsPath('/docs/introduction/installation')} class="gap-2 px-8 text-base">
-				Start integration
-				<ArrowRightIcon class="size-4" />
-			</Button>
-			<Button variant="outline" size="lg" href="https://github.com/Kamionn/LastMenu" target="_blank" class="gap-2 px-6">
-				<GithubIcon class="size-4" />
-				GitHub
-			</Button>
+	<div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
+		<div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-start">
+			<div class="text-center lg:text-left">
+				<div class="bg-muted text-muted-foreground mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm">
+					<ZapIcon class="size-3.5" />
+					<span>v1.0.0 — Zero dependencies · Svelte 5 · FiveM</span>
+				</div>
+				<h1 class="text-foreground mb-6 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+					LastMenu
+				</h1>
+				<p class="text-muted-foreground mb-6 max-w-2xl text-xl font-medium sm:text-2xl">
+					Universal menu system for FiveM.
+				</p>
+				<p class="text-muted-foreground mb-10 max-w-2xl text-base sm:text-lg leading-8">
+					One API. All menu types. Real-time reactivity.
+					Works without <code class="bg-muted rounded px-1.5 py-0.5 text-sm">ox_lib</code>,
+					<code class="bg-muted rounded px-1.5 py-0.5 text-sm">qbx_core</code> or any framework.
+				</p>
+				<div class="flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
+					<Button size="lg" href={docsPath('/docs/introduction/installation')} class="gap-2 px-8 text-base">
+						Start integration
+						<ArrowRightIcon class="size-4" />
+					</Button>
+					<Button variant="outline" size="lg" href="https://github.com/Kamionn/LastMenu" target="_blank" class="gap-2 px-6">
+						<GithubIcon class="size-4" />
+						GitHub
+					</Button>
+				</div>
+			</div>
+
+			
+
+				<div class="overflow-hidden rounded-[1.5rem] border border-white/10 bg-background/95">
+					<div class="bg-muted/50 border-b px-4 py-2 flex items-center gap-2">
+						<div class="size-3 rounded-full bg-red-400/60"></div>
+						<div class="size-3 rounded-full bg-yellow-400/60"></div>
+						<div class="size-3 rounded-full bg-green-400/60"></div>
+						<span class="text-muted-foreground ml-2 text-xs font-mono">client/garage.lua</span>
+					</div>
+					<Typewriter text={fullCode} />
+				
+			</div>
 		</div>
 	</div>
 </section>
@@ -144,100 +180,6 @@
 					<p class="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
 				</div>
 			{/each}
-		</div>
-	</div>
-</section>
-
-<!-- Components Section -->
-<section class="bg-muted/50 border-t py-20 sm:py-28">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="mb-14 text-center">
-			<h2 class="text-foreground mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-				7 components, 1 API
-			</h2>
-			<p class="text-muted-foreground mx-auto max-w-2xl text-lg">
-				Each component follows the same builder pattern — no learning curve between types.
-			</p>
-		</div>
-		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-			{#each components as comp}
-				<a
-					href={comp.href}
-					class="group bg-background rounded-xl border p-5 transition-all hover:shadow-md hover:border-primary/30"
-				>
-					<h3 class="text-foreground mb-1 text-sm font-semibold group-hover:text-primary transition-colors">
-						{comp.name}
-					</h3>
-					<p class="text-muted-foreground text-xs leading-relaxed">{comp.desc}</p>
-				</a>
-			{/each}
-		</div>
-	</div>
-</section>
-
-<!-- Quick Start Code -->
-<section class="border-t py-20 sm:py-28">
-	<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-		<div class="mb-10 text-center">
-			<h2 class="text-foreground mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-				Integration in 3 lines
-			</h2>
-			<p class="text-muted-foreground text-lg">
-				Declare the export, call the builder, that's it.
-			</p>
-		</div>
-		<div class="rounded-xl border overflow-hidden">
-			<div class="bg-muted/50 border-b px-4 py-2 flex items-center gap-2">
-				<div class="size-3 rounded-full bg-red-400/60"></div>
-				<div class="size-3 rounded-full bg-yellow-400/60"></div>
-				<div class="size-3 rounded-full bg-green-400/60"></div>
-				<span class="text-muted-foreground ml-2 text-xs font-mono">client/garage.lua</span>
-			</div>
-			<pre class="bg-background overflow-x-auto p-6 text-sm"><code class="text-foreground font-mono leading-relaxed">local UI = exports['LastMenu']
-
-UI:context(function(menu)
-    menu:title("Garage")
-    menu:description("Vehicle maintenance")
-
-    menu:button("Repair engine", &#123;
-        icon    = "wrench",
-        badge   = "500 €",
-        confirm_hold = true,
-        cb      = function() TriggerServerEvent('garage:repair') end,
-    &#125;)
-
-    menu:stat("Engine status", &#123;
-        value   = function() return GetVehicleEngineHealth(GetVehiclePedIsIn(PlayerPedId(), false)) / 10 end,
-        max     = 100,
-        icon    = "activity",
-        suffix  = "%",
-        refresh = 1000,
-    &#125;)
-end)</code></pre>
-		</div>
-	</div>
-</section>
-
-<!-- CTA Section -->
-<section class="border-t">
-	<div class="bg-primary/5 relative overflow-hidden py-20 sm:py-28">
-		<div class="from-primary/10 to-primary/0 absolute right-0 top-0 hidden size-[600px] -translate-y-1/3 translate-x-1/3 rounded-full bg-linear-to-b blur-3xl sm:block"></div>
-		<div class="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-			<h2 class="text-foreground mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-				Ready to integrate LastMenu?
-			</h2>
-			<p class="text-muted-foreground mx-auto mb-8 max-w-xl text-lg">
-				Copy the resource, declare the export, it's operational. No complex configuration.
-			</p>
-			<div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-				<Button size="lg" href={docsPath('/docs/introduction/installation')} class="gap-2 px-8 text-base">
-					Start integration
-					<ArrowRightIcon class="size-4" />
-				</Button>
-				<Button variant="outline" size="lg" href={docsPath('/docs')} class="gap-2 px-6">
-					Browse documentation
-				</Button>
-			</div>
 		</div>
 	</div>
 </section>
