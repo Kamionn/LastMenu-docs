@@ -2,7 +2,7 @@
 title: Radial Menu
 description: Circular action wheel — ideal for quick shortcuts accessible by mouse, keyboard or controller.
 order: 2
-lastUpdated: 2026-04-14
+lastUpdated: 2026-04-20
 ---
 
 ## Opening
@@ -49,10 +49,12 @@ RegisterCommand('closewheel', function() radial.close() end, false)
 | `icon` | `string` | — | Lucide icon name |
 | `cb` | `function()` | — | Called on selection |
 | `keep_open` | `bool` | `false` | Don't close radial after callback |
+| `confirm_hold` | `bool\|number` | `nil` | Hold-to-confirm duration in ms (`true` = config value) |
 | `submenu` | `function(r)` | `nil` | Opens nested radial on click |
 | `visible` | `bool\|function() → bool` | `true` | Hides and removes the sector |
 | `disabled` | `bool\|function() → bool` | `false` | Grayed out, no callback |
-| `refresh` | `number` | `250` | Polling interval (ms) for `visible`/`disabled` |
+| `refresh` | `number` | `500` | Polling interval (ms) for `visible`/`disabled` |
+| `id` | `string` | *(auto)* | Stable callback ID (useful when button count is dynamic) |
 
 ---
 

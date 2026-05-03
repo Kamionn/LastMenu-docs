@@ -1,8 +1,8 @@
 ---
 title: Context Menu
-description: Vertical context menu — LastMenu's main component. Supports all item types, real-time reactivity, tabs, accordions and sub-menus.
+description: Vertical context menu — LastMenu's main component. Supports all item types, real-time reactivity, tabs, accordions, sub-menus, keyboard navigation and drag positioning.
 order: 1
-lastUpdated: 2026-04-14
+lastUpdated: 2026-04-20
 ---
 
 ## Opening
@@ -16,7 +16,7 @@ UI:context(function(menu)
 end)
 ```
 
-The menu opens immediately. It closes on `Escape` or by calling the appropriate callback.
+The menu opens immediately. It closes on `Escape` or when a callback closes it.
 
 ---
 
@@ -32,8 +32,9 @@ These methods are placed at the **top of the builder**, before items.
 | `menu:animation(anim)` | string | `'slideLeft'` | Opening animation: `'slideLeft'` `'slideRight'` `'fade'` `'scale'` |
 | `menu:nav(mode)` | string | `'both'` | Navigation mode: `'mouse'` `'keyboard'` `'both'` |
 | `menu:search()` | — | — | Force display of the search bar |
-| `menu:page_size(n)` | number | 20 | Items per page (automatic pagination beyond) |
-| `menu:scroll()` | — | — | Disable pagination — native scroll on all items |
+| `menu:page_size(n)` | number | 20 | Items per page (automatic pagination beyond). Ignored when `scroll()` is set. |
+| `menu:scroll()` | — | — | Disable pagination — native scroll on all items. Mutually exclusive with `page_size()`. |
+| `menu:cancelable(v)` | bool | `true` | Set to `false` to prevent Escape from closing this menu. |
 
 ### Scroll Mode
 
@@ -50,7 +51,7 @@ UI:context(function(menu)
 end)
 ```
 
-> `menu:scroll()` and `menu:page_size()` are mutually exclusive. `scroll()` takes priority.
+> Keyboard navigation (`↑` / `↓`) scrolls the container automatically to keep the focused item visible.
 
 ---
 
@@ -67,21 +68,21 @@ menu:button(label, opts)
 | Option | Type | Description |
 |---|---|---|
 | `icon` | string | Lucide icon name (`"wrench"`, `"car"`, `"zap"`) |
-| `color` | string | Accent color for icon and gradient (hex) |
+| `color` | string/fn | Accent color for icon and gradient (hex) — supports reactive function |
 | `gradient` | bool | Colored gradient background |
-| `badge` | string | Badge on the right (`"NEW"`, `"500 €"`) |
-| `hint` | string | Subtle text on the right |
+| `badge` | string/fn | Badge on the right (`"NEW"`, `"500 €"`) — supports reactive function |
+| `hint` | string/fn | Subtle text on the right — supports reactive function |
 | `hotkey` | string | Keyboard shortcut label displayed in `<kbd>` |
 | `arrow` | bool | Shows `›` (indicates a sub-menu) |
 | `confirm_hold` | bool/number | `true` = hold 1.5s ; a number = custom duration in ms |
 | `cooldown` | number | Milliseconds before being able to click again |
-| `persist_key` | string | Stable key for cooldown persistence when label is dynamic |
-| `keep_open` | bool | Don't close menu on click |
-| `timeout` | number | Automatically disable item after N ms |
+| `persist_key` | string | Stable localStorage key for cooldown persistence when label is dynamic |
+| `keep_open` | bool | Don't close menu on click (default: `false`) |
+| `timeout` | number | Automatically disable item after N ms from menu open |
 | `preview` | table | Preview panel on hover (see below) |
 | `visible` | bool/fn | Hide the item (supports reactive function) |
 | `disabled` | bool/fn | Disable the item (supports reactive function) |
-| `refresh` | number | Polling interval in ms for `visible`/`disabled` |
+| `refresh` | number | Polling interval in ms for reactive fields (default: `500`) |
 | `cb` | function | Called on click |
 
 **Preview Panel** — displayed on the right of the menu on hover:
@@ -116,7 +117,7 @@ menu:button("Buy item", {
     cb       = function() end,
 })
 
--- Hold-to-confirm
+-- Hold-to-confirm (1.5s)
 menu:button("Delete save", {
     icon         = "trash",
     confirm_hold = true,
@@ -136,6 +137,19 @@ menu:button("Limited offer", {
     badge   = "EXPIRES",
     timeout = 8000,
     cb      = function() print("offer accepted!") end,
+})
+
+-- Sub-menu arrow (keep_open so parent stays open)
+menu:button("More options", {
+    icon      = "settings",
+    arrow     = true,
+    keep_open = true,
+    cb        = function()
+        UI:context(function(sub)
+            sub:title("More options")
+            sub:button("Option A", { cb = function() end })
+        end)
+    end,
 })
 ```
 
@@ -174,9 +188,19 @@ menu:stepper("Repair kits", {
     max     = 10,
     step    = 1,
     default = 2,
+    suffix  = " kits",
     cb      = function(value) print("Kits:", value) end,
 })
 ```
+
+| Option | Type | Description |
+|---|---|---|
+| `min` | number | Minimum value (default: `0`) |
+| `max` | number | Maximum value (default: `99`) |
+| `step` | number | Increment per step (default: `1`) |
+| `default` | number | Initial value |
+| `suffix` | string | Unit label appended to value (e.g. `" kits"`, `" m"`) |
+| `id` | string | Stable callback ID |
 
 ---
 
@@ -257,7 +281,12 @@ menu:stat("Health", {
     suffix  = "hp",
     refresh = 500,
 })
+
+-- Legacy signature (still supported)
+menu:stat("Engine", 78, 100, { icon = "activity", suffix = "%" })
 ```
+
+Both `value` and `max` support reactive functions.
 
 ---
 
@@ -285,6 +314,15 @@ menu:input_inline("Speed limit", {
 })
 ```
 
+| Option | Type | Description |
+|---|---|---|
+| `type` | string | `"text"` (default) or `"number"` |
+| `placeholder` | string | Placeholder text |
+| `default` | string/number | Initial value |
+| `maxlen` | integer | Max character length (text only) |
+| `min` / `max` | number | Value range (number only) |
+| `cb` | function | Called on confirm (`Enter` or blur) |
+
 Navigation: `Enter` on the line → focus the field. `Enter` in the field → confirm. `Escape` → unfocus.
 
 ---
@@ -302,6 +340,8 @@ menu:color_picker("Body color", {
 })
 ```
 
+Keyboard: `Enter` opens the popover. `←` `→` `↑` `↓` navigate presets. `Enter`/`Space` selects. `Escape` closes.
+
 ---
 
 ### date_picker
@@ -312,9 +352,18 @@ Three numeric fields day/month/year. Returns ISO string `"YYYY-MM-DD"`.
 menu:date_picker("Service date", {
     icon    = "calendar",
     default = "2025-06-15",
+    min     = "2024-01-01",   -- optional lower bound
+    max     = "2030-12-31",   -- optional upper bound
+    format  = "dmy",          -- 'dmy' (default) | 'mdy' | 'ymd'
     cb      = function(date) print("Date:", date) end,
 })
 ```
+
+| Option | Type | Description |
+|---|---|---|
+| `default` | string | Pre-filled date in `"YYYY-MM-DD"` (defaults to today) |
+| `min` / `max` | string | Selectable date bounds (`"YYYY-MM-DD"`) |
+| `format` | string | Display order: `'dmy'` DD/MM/YYYY, `'mdy'` MM/DD/YYYY, `'ymd'` YYYY/MM/DD |
 
 ---
 
@@ -333,8 +382,13 @@ menu:separator()
 Section label (uppercase, dimmed).
 
 ```lua
-menu:header("Vehicle stats", { color = "#60a5fa" })
+menu:header("Vehicle stats", { color = "#60a5fa", align = "left" })
 ```
+
+| Option | Type | Description |
+|---|---|---|
+| `color` | string | Text color override (hex) |
+| `align` | string | `'left'` (default), `'center'`, `'right'` |
 
 ---
 
@@ -382,6 +436,116 @@ end, { icon = "package" })
 
 ---
 
+## Reusable Menus
+
+Build once, open multiple times without re-running the builder:
+
+```lua
+local shopMenu = exports.LastMenu:context_build(function(menu)
+    menu:title("Shop")
+    menu:button("Buy Item — 50 €", {
+        icon = "shopping-cart",
+        cb   = function() print("purchased") end,
+    })
+end)
+
+RegisterCommand('openshop', function()
+    shopMenu.open()
+end, false)
+```
+
+> Reactive watchers start fresh on each `open()`.
+
+---
+
+## Sub-menus
+
+Open a second context menu from a callback. The parent stays in the stack.
+
+```lua
+menu:button("Advanced options", {
+    icon      = "settings",
+    arrow     = true,
+    keep_open = true,
+    cb        = function()
+        UI:context(function(sub)
+            sub:title("Advanced options")
+            sub:animation("slideRight")
+            sub:button("Option A", { cb = function() end })
+            sub:back("Back", { icon = "arrow-left" })
+        end)
+    end,
+})
+```
+
+### Helpers: `submenu()` and `back()`
+
+```lua
+UI:context(function(menu)
+    menu:title("Main Menu")
+
+    menu:submenu("Settings", function(sub)
+        sub:title("Settings")
+        sub:button("Audio", { icon = "volume-2", cb = function() end })
+        sub:button("Video", { icon = "monitor",  cb = function() end })
+        sub:back("Back",    { icon = "arrow-left" })
+    end, { icon = "settings" })
+end)
+```
+
+`menu:back(label, opts)` closes the current menu and returns to the parent. Pass `opts.cb` for cleanup logic before popping:
+
+```lua
+sub:back("Back", {
+    icon = "arrow-left",
+    cb   = function() cleanup() end
+})
+```
+
+---
+
+## Live Rebuild (`context_update`)
+
+Rebuilds the currently visible context menu **without closing and reopening it**. Use it when the item list itself changes (items added/removed), not just field values.
+
+```lua
+exports.LastMenu:context_update(function(menu)
+    menu:title("Shop")
+    for _, item in ipairs(getUpdatedInventory()) do
+        menu:button(item.name, { badge = item.price .. " €", cb = function() buy(item) end })
+    end
+end)
+```
+
+> Only works when the top of the stack is a context menu. Silently ignored otherwise.
+
+**When to use `context_update` vs reactive watchers:**
+
+| Situation | Recommended |
+|---|---|
+| A button label / badge / color / visible changes | Watcher (`badge = function()`, `visible = function()`) |
+| The item list itself changes (add/remove items) | `context_update` |
+| Switching tabs by reloading the entire menu | `context_update` |
+
+**Handle variant** — `context_build` handles expose the same method:
+
+```lua
+local shopHandle = exports.LastMenu:context_build(function(menu)
+    -- …
+end)
+
+-- Rebuild without closing/reopening:
+shopHandle.update(function(menu)
+    menu:title("Shop (refreshed)")
+    -- …
+end)
+
+-- Or re-run the original builder:
+shopHandle.update()
+```
+
+---
+
 ## Keyboard Controls
 
 | Key | Action |
@@ -399,12 +563,27 @@ end, { icon = "package" })
 
 Players can open the **settings panel** at any time via **F12**:
 
-- **Navigation mode** — Mouse / Keyboard / Both
-- **Accent color** — 10 presets + free selector
-- **Font size** — 80% to 130%
-- **Reset position** — resets menu to default position
+| Setting | Options | Description |
+|---|---|---|
+| **Navigation mode** | Mouse / Keyboard / Both | Controls menu input response |
+| **Target key** | Left Ctrl / E / G / Alt | Key used to open target action menus |
+| **Accent color** | 10 presets + free selector | Changes `--ui-accent` globally |
+| **Menu opacity** | Slider | Changes `--ui-ctx-bg` alpha |
+| **Menu width** | Slider | Changes `--ui-ctx-width` |
+| **Compact mode** | Toggle | Reduces item height |
+| **Blur effect** | Toggle | Enables/disables backdrop-filter |
+| **Font size** | 80% to 130% | Changes `--ui-font-scale` |
+| **UI sounds** | Toggle | Enables/disables click/hover sounds |
+| **Notification position** | 4 quadrants | Toast placement |
+| **Reset position** | Button | Resets menu to default screen position |
 
 Settings are saved in `localStorage`. Developer options `menu:nav('mouse')` / `menu:nav('keyboard')` always take priority over the player's global setting.
+
+> Open or close the settings panel programmatically:
+> ```lua
+> exports.LastMenu:settings_open()
+> exports.LastMenu:settings_close()
+> ```
 
 ---
 

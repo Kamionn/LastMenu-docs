@@ -1,7 +1,9 @@
 import RocketIcon from '@lucide/svelte/icons/rocket';
 import LayoutGridIcon from '@lucide/svelte/icons/layout-grid';
+import MenuIcon from '@lucide/svelte/icons/menu';
 import ZapIcon from '@lucide/svelte/icons/zap';
 import PaletteIcon from '@lucide/svelte/icons/palette';
+import BookOpenIcon from '@lucide/svelte/icons/book-open';
 import type { DocsConfig } from './types.js';
 
 export const docsConfig: DocsConfig = {
@@ -20,6 +22,11 @@ export const docsConfig: DocsConfig = {
 			autogenerate: { directory: 'introduction' }
 		},
 		{
+			label: 'Context Menu',
+			icon: MenuIcon,
+			autogenerate: { directory: 'context-menu' }
+		},
+		{
 			label: 'UI Components',
 			icon: LayoutGridIcon,
 			autogenerate: { directory: 'composants' }
@@ -33,6 +40,11 @@ export const docsConfig: DocsConfig = {
 			label: 'Customization',
 			icon: PaletteIcon,
 			autogenerate: { directory: 'personnalisation' }
+		},
+		{
+			label: 'Examples',
+			icon: BookOpenIcon,
+			autogenerate: { directory: 'exemples' }
 		}
 	],
 	toc: {
